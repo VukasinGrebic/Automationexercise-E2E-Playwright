@@ -1,14 +1,16 @@
 {
   "name": "parabank-e2e-playwright",
   "version": "1.0.0",
-  "description": "Automated e2e software testing with Playwright",
+  "description": "Automated e2e software testing with playwright",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "tests:chrome": "playwright test --config=playwright.config.ts --project=Chromium --reporter=html",
+    "tests:firefox": "playwright test --config=playwright.config.ts --project=Firefox --reporter=html",
+    "tests:webkit": "playwright test --config=playwright.config.ts --project=Webkit --reporter=html"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/VukasinGrebic/Parabank-E2E-Playwright.git"
+    "url": "https://github.com/VukasinGrebic/Parabank-E2E-Playwright.git"
   },
   "author": "Vukasin Grebic",
   "license": "ISC",
