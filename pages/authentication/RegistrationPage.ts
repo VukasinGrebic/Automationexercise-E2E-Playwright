@@ -16,6 +16,7 @@ export class RegistrationPage {
     readonly registerBtn: Locator
     readonly successMsg: Locator
     readonly welcomeMsg: Locator
+    readonly errorMsg: Locator
 
     constructor(page: Page) {
         this.page = page
@@ -33,9 +34,10 @@ export class RegistrationPage {
         this.registerBtn = page.locator("//input[contains(@value,'Register')]")
         this.successMsg = page.locator("//div[@id='rightPanel']/p")
         this.welcomeMsg = page.locator("//h1")
+        this.errorMsg = page.locator("//span[contains(@class,'error')]")
     }
 
-    async register(firstName: string, lastName: string, address: string, city: string, state: string, zipCode: string, phone: string, ssn: string, username: string, password: string, passwordRe: string) {
+    async register(firstName: string, lastName: string, address: string, city: string, state: string, zipCode: string, ssn: string, username: string, password: string, passwordRe: string) {
         await this.firstNameInput.click()
         await this.firstNameInput.type(firstName)
         await this.lastNameInput.type(lastName)
@@ -43,7 +45,6 @@ export class RegistrationPage {
         await this.cityInput.type(city)
         await this.stateInput.type(state)
         await this.zipCodeInput.type(zipCode)
-        await this.phoneInput.type(phone)
         await this.ssnInput.type(ssn)
         await this.usernameInput.type(username)
         await this.passwordInput.type(password)
@@ -57,6 +58,10 @@ export class RegistrationPage {
 
     async assertSucessMsg() {
         await expect(this.successMsg).toContainText("Your account was created successfully. You are now logged in.")
+    }
+
+    async assertErrorMsg(message: string) {
+        await expect(this.errorMsg).toContainText(message)
     }
 
 
