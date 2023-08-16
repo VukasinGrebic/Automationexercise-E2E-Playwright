@@ -5,5 +5,5 @@ export async function getRandomNummber() {
 }
 
 export async function getRandomString() {
-    return crypto.randomBytes(20).toString("hex")
+    return crypto.randomBytes(6).toString("hex")
 }
