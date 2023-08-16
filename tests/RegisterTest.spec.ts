@@ -16,7 +16,7 @@ test.describe("Registration Flow", async () => {
         await homePage.clkRegister()
     })
 
-    test("Valid registration", async ({ page }) => {
+    test.only("Valid registration", async ({ page }) => {
         const firstName = await getRandomString()
         const lastName = await getRandomString()
         const adress = await getRandomString()
@@ -27,7 +27,6 @@ test.describe("Registration Flow", async () => {
         const ssn = await getRandomString()
         const username = await getRandomString()
         const password = await getRandomString()
-
         await registrationPage.register(firstName, lastName, adress, city, state, zipCode, phone, ssn, username, password, password)
         await registrationPage.assertRegistration(username)
         await registrationPage.assertSucessMsg()

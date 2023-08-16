@@ -2,7 +2,7 @@ import { test } from "@playwright/test"
 import { HomePage } from "../pages/HomePage"
 import { LoginPage } from "../pages/authentication/LoginPage"
 
-test.describe.parallel.only("Login flow", async () => {
+test.describe.parallel("Login flow", async () => {
     let homePage: HomePage
     let loginPage: LoginPage
 

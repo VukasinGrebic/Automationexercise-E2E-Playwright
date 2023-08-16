@@ -36,6 +36,7 @@ export class RegistrationPage {
     }
 
     async register(firstName: string, lastName: string, address: string, city: string, state: string, zipCode: string, phone: string, ssn: string, username: string, password: string, passwordRe: string) {
+        await this.firstNameInput.click()
         await this.firstNameInput.type(firstName)
         await this.lastNameInput.type(lastName)
         await this.addressInput.type(address)
