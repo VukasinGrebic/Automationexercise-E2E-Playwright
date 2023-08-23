@@ -2,7 +2,7 @@ import { test } from "@playwright/test"
 import { HomePage } from "../pages/HomePage"
 import { LoginPage } from "../pages/authentication/LoginPage"
 import { getRandomString } from "../utils/data-helpers"
-import { Credentials } from "../pages/enums/Credentials"
+import { Credentials } from "../enums/Credentials"
 
 test.describe.parallel("Login flow", async () => {
     let homePage: HomePage

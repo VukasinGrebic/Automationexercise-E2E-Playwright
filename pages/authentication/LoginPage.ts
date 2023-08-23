@@ -1,5 +1,5 @@
 import { expect, Locator, Page } from "@playwright/test"
-import { Messages } from "../enums/Messages"
+import { Messages } from "../../enums/Messages"
 
 export class LoginPage {
     readonly page: Page
