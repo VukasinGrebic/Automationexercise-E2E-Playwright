@@ -1,8 +1,9 @@
 import { test } from "@playwright/test"
 import { HomePage } from "../pages/HomePage"
 import { LoginPage } from "../pages/authentication/LoginPage"
+import { getRandomString } from "../utils/data-helpers"
 
-test.describe.parallel("Login flow", async () => {
+test.describe.only("Login flow", async () => {
     let homePage: HomePage
     let loginPage: LoginPage
 
@@ -11,31 +12,31 @@ test.describe.parallel("Login flow", async () => {
         loginPage = new LoginPage(page)
 
         await homePage.visit()
-
+        await homePage.assertHomePage()
+        await homePage.clkSignUp()
     })
 
    
 
 
     test("Valid login", async ({ page }) => {
-        let username = "randomtest@mail.com";
-        let password = "sifra1"
-        await loginPage.login(username, password)
+        const mail = "randomtest@mail.com"
+        const password = "sifra1"
+        await loginPage.login(mail, password)
         await loginPage.assertLogin()
-        await loginPage.assertMessage()
     })
 
     test("Invalid username login", async ({ page }) => {
-        let username = ""
-        let password = "sifra1"
-        await loginPage.login(username, password)
+        const mail = await getRandomString() + "@mail.com"
+        const password = "sifra1"
+        await loginPage.login(mail, password)
         await loginPage.assertErrorMsg()
     })
 
     test("Invalid password login", async ({ page }) => {
-        let username = "username1"
-        let password = ""
-        await loginPage.login(username, password)
+        const mail = "randomtest@mail.com"
+        const password = await getRandomString()
+        await loginPage.login(mail, password)
         await loginPage.assertErrorMsg()
     })
 

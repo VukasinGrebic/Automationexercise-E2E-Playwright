@@ -2,39 +2,35 @@ import { expect, Locator, Page } from "@playwright/test"
 
 export class LoginPage {
     readonly page: Page
-    readonly usernameField: Locator
+    readonly emailField: Locator
     readonly passwordField: Locator
     readonly loginBtn: Locator
-    readonly balance: Locator
-    readonly accountOverview: Locator
+    readonly deleteAccount: Locator
+    readonly logoutBtn: Locator
     readonly errorMsg: Locator
 
     constructor(page: Page) {
         this.page = page
-        this.usernameField = page.locator("//input[contains(@name,'username')]")
-        this.passwordField = page.locator("//input[contains(@name,'password')]")
-        this.loginBtn = page.locator("//div[contains(@class,'login')]/input[contains(@type, 'submit')]")
-        this.balance = page.locator("text=Balance")
-        this.accountOverview = page.locator("//h1")
-        this.errorMsg = page.locator("//p[contains(@class, 'error')]")
+        this.emailField = page.locator("//input[@data-qa='login-email']")
+        this.passwordField = page.locator("//input[@data-qa='login-password']")
+        this.loginBtn = page.locator("//button[@data-qa='login-button']")
+        this.deleteAccount = page.locator("text= Delete Account")
+        this.logoutBtn = page.locator("text= Logout")
+        this.errorMsg = page.locator("//p[contains(@style,'color: red')]")
     }
 
-    async login(username: string, password: string) {
-        await this.usernameField.type(username)
+    async login(email: string, password: string) {
+        await this.emailField.type(email)
         await this.passwordField.type(password)
         await this.loginBtn.click()
     }
 
     async assertLogin() {
-        await expect(this.balance).toBeVisible
-    }
-
-    async assertMessage() {
-        await expect(this.accountOverview).toContainText("Accounts Overview")
+        await expect(this.deleteAccount).toBeVisible()
     }
 
     async assertErrorMsg() {
-        await expect(this.errorMsg).toContainText("Please enter a username and password.")
+        await expect(this.errorMsg).toContainText("Your email or password is incorrect!")
     }
 
 

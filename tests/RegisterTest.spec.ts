@@ -13,10 +13,11 @@ test.describe("Registration Flow", async () => {
         registrationPage = new RegistrationPage(page)
 
         await homePage.visit()
+        await homePage.assertHomePage()
         await homePage.clkSignUp()
     })
 
-    test.only("Valid registration", async ({ page }) => {
+    test("Valid registration", async ({ page }) => {
         const name = await getRandomString()
         const email = await getRandomString() + "@mail.com"
         const password = await getRandomString()
