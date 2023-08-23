@@ -1,10 +1,10 @@
 import { test } from "@playwright/test"
 import { HomePage } from "../pages/HomePage"
 import { RegistrationPage } from "../pages/authentication/RegistrationPage"
-import { getRandomString } from "../utils/data-helpers"
+import { getRandomNumber, getRandomString } from "../utils/data-helpers"
 
 
-test.describe.only("Registration Flow", async () => {
+test.describe("Registration Flow", async () => {
     let homePage: HomePage
     let registrationPage: RegistrationPage
 
@@ -13,167 +13,30 @@ test.describe.only("Registration Flow", async () => {
         registrationPage = new RegistrationPage(page)
 
         await homePage.visit()
-        await homePage.clkRegister()
+        await homePage.clkSignUp()
     })
 
-    test("Valid registration", async ({ page }) => {
+    test.only("Valid registration", async ({ page }) => {
+        const name = await getRandomString()
+        const email = await getRandomString() + "@mail.com"
+        const password = await getRandomString()
+        const day = await getRandomNumber(1, 30)
+        const dayString = day.toString();
+        const month = await getRandomNumber(1, 12)
+        const monthString = month.toString();
+        const year = await getRandomNumber(1950, 2002)
+        const yearString = year.toString();
         const firstName = await getRandomString()
         const lastName = await getRandomString()
-        const adress = await getRandomString()
-        const city = await getRandomString()
+        const address = await getRandomString()
+        const country = "Canada"
         const state = await getRandomString()
-        const zipCode = await getRandomString()
-        const ssn = await getRandomString()
-        const username = await getRandomString()
-        const password = await getRandomString()
-        await registrationPage.register(firstName, lastName, adress, city, state, zipCode, ssn, username, password, password)
-        await registrationPage.assertRegistration(username)
+        const city = await getRandomString()
+        const zip = await getRandomString()
+        const phone = await getRandomString()
+        await registrationPage.register(name, email, password, dayString, monthString, yearString, firstName, lastName, address, country, state, city,zip, phone)
         await registrationPage.assertSucessMsg()
 
     })
 
-    test("Invalid firstname registration", async ({ page }) => {
-        const firstName = ""
-        const lastName = await getRandomString()
-        const adress = await getRandomString()
-        const city = await getRandomString()
-        const state = await getRandomString()
-        const zipCode = await getRandomString()
-        const ssn = await getRandomString()
-        const username = await getRandomString()
-        const password = await getRandomString()
-        await registrationPage.register(firstName, lastName, adress, city, state, zipCode, ssn, username, password, password)
-        await registrationPage.assertErrorMsg("First name is required")
-    })
-
-    test("Invalid lastname registration", async ({ page }) => {
-        const firstName = await getRandomString()
-        const lastName = ""
-        const adress = await getRandomString()
-        const city = await getRandomString()
-        const state = await getRandomString()
-        const zipCode = await getRandomString()
-        const ssn = await getRandomString()
-        const username = await getRandomString()
-        const password = await getRandomString()
-        await registrationPage.register(firstName, lastName, adress, city, state, zipCode, ssn, username, password, password)
-        await registrationPage.assertErrorMsg("Last name is required")
-    })
-
-    test("Invalid address registration", async ({ page }) => {
-        const firstName = await getRandomString()
-        const lastName = await getRandomString()
-        const adress = ""
-        const city = await getRandomString()
-        const state = await getRandomString()
-        const zipCode = await getRandomString()
-        const ssn = await getRandomString()
-        const username = await getRandomString()
-        const password = await getRandomString()
-
-        await registrationPage.register(firstName, lastName, adress, city, state, zipCode,  ssn, username, password, password)
-        await registrationPage.assertErrorMsg("Address is required")
-    })
-
-    test("Invalid city registration", async ({ page }) => {
-        const firstName = await getRandomString()
-        const lastName = await getRandomString()
-        const adress = await getRandomString()
-        const city = ""
-        const state = await getRandomString()
-        const zipCode = await getRandomString()
-        const ssn = await getRandomString()
-        const username = await getRandomString()
-        const password = await getRandomString()
-       
-        await registrationPage.register(firstName, lastName, adress, city, state, zipCode, ssn, username, password, password)
-        await registrationPage.assertErrorMsg("City is required")
-    })
-
-    test("Invalid state registration", async ({ page }) => {
-        const firstName = await getRandomString()
-        const lastName = await getRandomString()
-        const adress = await getRandomString()
-        const city = await getRandomString()
-        const state = ""
-        const zipCode = await getRandomString()
-        const ssn = await getRandomString()
-        const username = await getRandomString()
-        const password = await getRandomString()
-        await registrationPage.register(firstName, lastName, adress, city, state, zipCode, ssn, username, password, password)
-        await registrationPage.assertErrorMsg("State is required")
-    })
-
-    test("Invalid zip code registration", async ({ page }) => {
-        const firstName = await getRandomString()
-        const lastName = await getRandomString()
-        const adress = await getRandomString()
-        const city = await getRandomString()
-        const state = await getRandomString()
-        const zipCode = ""
-        const ssn = await getRandomString()
-        const username = await getRandomString()
-        const password = await getRandomString()
-        await registrationPage.register(firstName, lastName, adress, city, state, zipCode, ssn, username, password, password)
-        await registrationPage.assertErrorMsg("Zip Code is required")
-    })
-
-    test("Invalid Social Security Number registration", async ({ page }) => {
-        const firstName = await getRandomString()
-        const lastName = await getRandomString()
-        const adress = await getRandomString()
-        const city = await getRandomString()
-        const state = await getRandomString()
-        const zipCode = await getRandomString()
-        const ssn = ""
-        const username = await getRandomString()
-        const password = await getRandomString()
-        await registrationPage.register(firstName, lastName, adress, city, state, zipCode, ssn, username, password, password)
-        await registrationPage.assertErrorMsg("Social Security Number is required")
-    })
-
-    test("Invalid Username registration", async ({ page }) => {
-        const firstName = await getRandomString()
-        const lastName = await getRandomString()
-        const adress = await getRandomString()
-        const city = await getRandomString()
-        const state = await getRandomString()
-        const zipCode = await getRandomString()
-
-        const ssn = await getRandomString()
-        const username = ""
-        const password = await getRandomString()
-        await registrationPage.register(firstName, lastName, adress, city, state, zipCode, ssn, username, password, password)
-        await registrationPage.assertErrorMsg("Username is required")
-    })
-
-    test("Invalid Password registration", async ({ page }) => {
-        const firstName = await getRandomString()
-        const lastName = await getRandomString()
-        const adress = await getRandomString()
-        const city = await getRandomString()
-        const state = await getRandomString()
-        const zipCode = await getRandomString()
-        const ssn = await getRandomString()
-        const username = await getRandomString()
-        const password = ""
-        const passwordRe = await getRandomString()
-        await registrationPage.register(firstName, lastName, adress, city, state, zipCode, ssn, username, password, passwordRe)
-        await registrationPage.assertErrorMsg("Password is required")
-    })
-
-    test("Invalid Password confirmation registration", async ({ page }) => {
-        const firstName = await getRandomString()
-        const lastName = await getRandomString()
-        const adress = await getRandomString()
-        const city = await getRandomString()
-        const state = await getRandomString()
-        const zipCode = await getRandomString()
-        const ssn = await getRandomString()
-        const username = await getRandomString()
-        const password = await getRandomString()
-        const passwordRe = ""
-        await registrationPage.register(firstName, lastName, adress, city, state, zipCode, ssn, username, password, passwordRe)
-        await registrationPage.assertErrorMsg("Password confirmation is required.")
-    })
 })

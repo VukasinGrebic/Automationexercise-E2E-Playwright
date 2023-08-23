@@ -2,18 +2,18 @@ import { Locator, Page } from "@playwright/test"
 
 export class HomePage {
     readonly page: Page
-    readonly registerBtn: Locator
+    readonly signupBtn: Locator
     
     constructor (page: Page) {
         this.page = page
-        this.registerBtn = page.locator("text=Register")
+        this.signupBtn = page.locator("text=Signup / Login")
     }
 
     async visit () {
-        await this.page.goto("https://parabank.parasoft.com/parabank/index.htm")
+        await this.page.goto("https://automationexercise.com/")
     }
 
-    async clkRegister () {
-        await this.registerBtn.click()
+    async clkSignUp () {
+        await this.signupBtn.click()
     }
 }

@@ -14,8 +14,11 @@ test.describe.parallel("Login flow", async () => {
 
     })
 
+   
+
+
     test("Valid login", async ({ page }) => {
-        let username = "username1";
+        let username = "randomtest@mail.com";
         let password = "sifra1"
         await loginPage.login(username, password)
         await loginPage.assertLogin()
