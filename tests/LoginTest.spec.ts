@@ -3,7 +3,7 @@ import { HomePage } from "../pages/HomePage"
 import { LoginPage } from "../pages/authentication/LoginPage"
 import { getRandomString } from "../utils/data-helpers"
 
-test.describe.only("Login flow", async () => {
+test.describe.parallel("Login flow", async () => {
     let homePage: HomePage
     let loginPage: LoginPage
 
@@ -16,7 +16,7 @@ test.describe.only("Login flow", async () => {
         await homePage.clkSignUp()
     })
 
-   
+
 
 
     test("Valid login", async ({ page }) => {

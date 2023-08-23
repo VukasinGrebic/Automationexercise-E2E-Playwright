@@ -4,7 +4,7 @@ import { RegistrationPage } from "../pages/authentication/RegistrationPage"
 import { getRandomNumber, getRandomString } from "../utils/data-helpers"
 
 
-test.describe("Registration Flow", async () => {
+test.describe.parallel("Registration Flow", async () => {
     let homePage: HomePage
     let registrationPage: RegistrationPage
 

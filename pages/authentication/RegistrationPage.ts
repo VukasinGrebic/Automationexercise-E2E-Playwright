@@ -1,4 +1,5 @@
 import { expect, Locator, Page } from "@playwright/test"
+import { Messages } from "../enums/Messages"
 
 export class RegistrationPage {
     readonly page: Page
@@ -69,12 +70,6 @@ export class RegistrationPage {
 
 
     async assertSucessMsg() {
-        await expect(this.successMsg).toContainText("Account Created!")
+        await expect(this.successMsg).toContainText(Messages.RegistrationSuccess)
     }
-
-    async assertErrorMsg(message: string) {
-        await expect(this.errorMsg).toContainText(message)
-    }
-
-
 }
