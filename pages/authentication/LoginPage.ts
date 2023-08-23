@@ -31,7 +31,7 @@ export class LoginPage {
     }
 
     async assertErrorMsg() {
-        await expect(this.errorMsg).toContainText(Messages.LoginError)
+        await expect(this.errorMsg).toContainText(Messages.LOGIN_ERROR)
     }
 
 

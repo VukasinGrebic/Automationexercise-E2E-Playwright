@@ -1,4 +1,4 @@
 export enum Messages {
-    LoginError = "Your email or password is incorrect!",
-    RegistrationSuccess = "Account Created!",
+    LOGIN_ERROR = "Your email or password is incorrect!",
+    REGISTRATION_SUCCESS = "Account Created!",
 }

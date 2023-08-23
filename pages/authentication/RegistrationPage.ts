@@ -70,6 +70,6 @@ export class RegistrationPage {
 
 
     async assertSucessMsg() {
-        await expect(this.successMsg).toContainText(Messages.RegistrationSuccess)
+        await expect(this.successMsg).toContainText(Messages.REGISTRATION_SUCCESS)
     }
 }
