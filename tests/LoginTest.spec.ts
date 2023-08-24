@@ -1,9 +1,11 @@
-import { test } from "../dataproviders/LoginDataProvider"
+import { test } from "@playwright/test"
 import { HomePage } from "../pages/HomePage"
 import { LoginPage } from "../pages/authentication/LoginPage"
-import { getRandomString } from "../utils/data-helpers"
 
-test.describe.parallel("Login flow", async () => {
+import { invalidMailLoginData, invalidPasswordLoginData, validLoginData } from "../dataproviders/LoginDataProvider"
+
+
+test.describe.only("Login flow", async () => {
     let homePage: HomePage
     let loginPage: LoginPage
 
@@ -16,24 +18,25 @@ test.describe.parallel("Login flow", async () => {
         await homePage.clkSignUp()
     })
 
-
-
-
-    test("Valid login", async ({ page, email, password}) => {
-        await loginPage.login(email, password)
-        await loginPage.assertLogin()
+    validLoginData.forEach(data => {
+        test(`Valid login ${data.mail}`, async ({ page }) => {
+            await loginPage.login(data.mail, data.password)
+            await loginPage.assertLogin()
+        })
     })
 
-    test("Invalid username login", async ({ page, password }) => {
-        const mail = await getRandomString() + "@mail.com"
-        await loginPage.login(mail, password)
-        await loginPage.assertErrorMsg()
+    invalidMailLoginData.forEach(data => {
+        test(`Invalid login ${data.mail}`, async ({ page }) => {
+            await loginPage.login(data.mail, data.password)
+            await loginPage.assertErrorMsg()
+        })
     })
 
-    test("Invalid password login", async ({ page, email }) => {
-        const password = await getRandomString()
-        await loginPage.login(email, password)
-        await loginPage.assertErrorMsg()
+    invalidPasswordLoginData.forEach(data => {
+        test(`Invalid login ${data.mail}`, async ({ page }) => {
+            await loginPage.login(data.mail, data.password)
+            await loginPage.assertErrorMsg()
+        })
     })
 
 })
