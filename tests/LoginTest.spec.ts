@@ -1,8 +1,7 @@
-import { test } from "@playwright/test"
+import { test } from "../dataproviders/LoginDataProvider"
 import { HomePage } from "../pages/HomePage"
 import { LoginPage } from "../pages/authentication/LoginPage"
 import { getRandomString } from "../utils/data-helpers"
-import { Credentials } from "../enums/Credentials"
 
 test.describe.parallel("Login flow", async () => {
     let homePage: HomePage
@@ -20,24 +19,20 @@ test.describe.parallel("Login flow", async () => {
 
 
 
-    test("Valid login", async ({ page }) => {
-        const mail = Credentials.EMAIL
-        const password = Credentials.PASSWORD
-        await loginPage.login(mail, password)
+    test("Valid login", async ({ page, email, password}) => {
+        await loginPage.login(email, password)
         await loginPage.assertLogin()
     })
 
-    test("Invalid username login", async ({ page }) => {
+    test("Invalid username login", async ({ page, password }) => {
         const mail = await getRandomString() + "@mail.com"
-        const password = Credentials.PASSWORD
         await loginPage.login(mail, password)
         await loginPage.assertErrorMsg()
     })
 
-    test("Invalid password login", async ({ page }) => {
-        const mail = Credentials.EMAIL
+    test("Invalid password login", async ({ page, email }) => {
         const password = await getRandomString()
-        await loginPage.login(mail, password)
+        await loginPage.login(email, password)
         await loginPage.assertErrorMsg()
     })
 
