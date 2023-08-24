@@ -7,11 +7,9 @@ export const validLoginData = [{
 },]
 
 export const invalidMailLoginData = [{
-    mail: getRandomString() + "@mail.com",
     password: Credentials.PASSWORD
 },]
 
 export const invalidPasswordLoginData = [{
-    mail: Credentials.EMAIL,
-    password: getRandomString()
+    mail: Credentials.EMAIL
 },]
