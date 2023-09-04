@@ -19,9 +19,11 @@ test.describe("Login flow", async () => {
     })
 
     validLoginData.forEach(data => {
-        test(`Valid login ${data.mail}`, async ({ page }) => {
+        test.only(`Valid login ${data.mail} and logout`, async ({ page }) => {
             await loginPage.login(data.mail, data.password)
             await loginPage.assertLogin()
+            await loginPage.logout()
+            await loginPage.assertLogout()
         })
     })
 
@@ -38,15 +40,5 @@ test.describe("Login flow", async () => {
             await loginPage.assertErrorMsg()
         })
     })
-
-    validLoginData.forEach(data => {
-        test.only(`Logout ${data.mail}`, async ({ page }) => {
-            await loginPage.login(data.mail, data.password)
-            await loginPage.assertLogin()
-            await loginPage.logout()
-            await loginPage.assertLogout()
-        })
-    })
-    
 
 })
