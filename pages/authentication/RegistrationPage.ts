@@ -22,6 +22,8 @@ export class RegistrationPage {
     readonly ssnInput: Locator
     readonly usernameInput: Locator
     readonly registerBtn: Locator
+    readonly continueBtn: Locator
+    readonly deleteBtn: Locator
     readonly successMsg: Locator
     readonly errorMsg: Locator
 
@@ -44,8 +46,10 @@ export class RegistrationPage {
         this.zipCodeInput = page.locator("#zipcode")
         this.phoneInput = page.locator("#mobile_number")
         this.registerBtn = page.locator("//button[@data-qa='create-account']")
+        this.continueBtn = page.locator("//a[contains(@data-qa, 'continue-button')]")
+        this.deleteBtn = page.locator("text= Delete Account")
         this.successMsg = page.locator("//b")
-        this.errorMsg = page.locator("//span[contains(@class,'error')]")
+        this.errorMsg = page.locator("//div[contains(@class, 'signup-form')]//p")
     }
 
     async register(name: string, email: string, password: string, day: string, month: string, year: string, firstname: string, lastname: string, address: string, country: string, state: string, city: string, zip: string, phone: string) {
@@ -68,8 +72,27 @@ export class RegistrationPage {
         await this.registerBtn.click()
     }
 
+    async registerInvalid(name: string, email: string) {
+        await this.name.type(name)
+        await this.email.type(email)
+        await this.signupBtn.click()
+    }
+
+    async deleteAccount() {
+        await this.continueBtn.click()
+        await this.deleteBtn.click()
+    }
+
 
     async assertSucessMsg() {
         await expect(this.successMsg).toContainText(Messages.REGISTRATION_SUCCESS)
+    }
+
+    async assertErrorMsg() {
+        await expect(this.errorMsg).toContainText(Messages.REGISTRATION_ERROR)
+    }
+
+    async assertSucessDeleteMsg() {
+        await expect(this.successMsg).toContainText(Messages.REGISTRATION_DELETE_SUCCESS)
     }
 }

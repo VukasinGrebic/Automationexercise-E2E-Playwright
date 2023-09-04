@@ -9,6 +9,7 @@ export class LoginPage {
     readonly deleteAccount: Locator
     readonly logoutBtn: Locator
     readonly errorMsg: Locator
+    readonly logoutPage: Locator
 
     constructor(page: Page) {
         this.page = page
@@ -18,6 +19,7 @@ export class LoginPage {
         this.deleteAccount = page.locator("text= Delete Account")
         this.logoutBtn = page.locator("text= Logout")
         this.errorMsg = page.locator("//p[contains(@style,'color: red')]")
+        this.logoutPage = page.locator("//div[contains(@class,'login-form')]//h2")
     }
 
     async login(email: string, password: string) {
@@ -26,12 +28,20 @@ export class LoginPage {
         await this.loginBtn.click()
     }
 
+    async logout() {
+        await this.logoutBtn.click()
+    }
+
     async assertLogin() {
         await expect(this.deleteAccount).toBeVisible()
     }
 
     async assertErrorMsg() {
         await expect(this.errorMsg).toContainText(Messages.LOGIN_ERROR)
+    }
+
+    async assertLogout () {
+        await expect(this.logoutPage).toContainText(Messages.LOGOUT)
     }
 
 

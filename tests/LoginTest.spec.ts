@@ -5,7 +5,7 @@ import { LoginPage } from "../pages/authentication/LoginPage"
 import { invalidMailLoginData, invalidPasswordLoginData, validLoginData } from "../dataproviders/LoginDataProvider"
 
 
-test.describe.only("Login flow", async () => {
+test.describe("Login flow", async () => {
     let homePage: HomePage
     let loginPage: LoginPage
 
@@ -38,5 +38,15 @@ test.describe.only("Login flow", async () => {
             await loginPage.assertErrorMsg()
         })
     })
+
+    validLoginData.forEach(data => {
+        test.only(`Logout ${data.mail}`, async ({ page }) => {
+            await loginPage.login(data.mail, data.password)
+            await loginPage.assertLogin()
+            await loginPage.logout()
+            await loginPage.assertLogout()
+        })
+    })
+    
 
 })
