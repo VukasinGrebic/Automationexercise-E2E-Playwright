@@ -6,7 +6,7 @@ import { Navbar } from "../pages/components/Navbar"
 import { invalidMailLoginData, invalidPasswordLoginData, validLoginData } from "../dataproviders/LoginDataProvider"
 
 
-test.describe("Login flow", async () => {
+test.describe.parallel("Login flow", async () => {
     let homePage: HomePage
     let loginPage: LoginPage
     let navbar: Navbar
@@ -22,7 +22,7 @@ test.describe("Login flow", async () => {
     })
 
     validLoginData.forEach(data => {
-        test.only(`Valid login ${data.mail} and logout`, async ({ page }) => {
+        test(`Valid login ${data.mail} and logout`, async ({ page }) => {
             await loginPage.login(data.mail, data.password)
             await loginPage.assertLogin()
             await navbar.clickOnTab("Logout")

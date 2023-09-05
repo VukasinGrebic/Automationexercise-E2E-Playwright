@@ -6,7 +6,7 @@ import { getRandomNumber, getRandomString } from "../utils/data-helpers"
 import { Credentials } from "../enums/Credentials"
 
 
-test.describe.only("Registration Flow", async () => {
+test.describe.parallel("Registration Flow", async () => {
     let homePage: HomePage
     let registrationPage: RegistrationPage
     let navbar: Navbar
@@ -21,7 +21,7 @@ test.describe.only("Registration Flow", async () => {
         await homePage.clkSignUp()
     })
 
-    test.only("Valid registration and deleting account", async ({ page }) => {
+    test("Valid registration and deleting account", async ({ page }) => {
         const name = await getRandomString()
         const email = await getRandomString() + "@mail.com"
         const password = await getRandomString()
