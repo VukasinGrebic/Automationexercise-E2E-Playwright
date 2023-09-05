@@ -1,17 +1,20 @@
 import { test } from "@playwright/test"
 import { HomePage } from "../pages/HomePage"
 import { RegistrationPage } from "../pages/authentication/RegistrationPage"
+import { Navbar } from "../pages/components/Navbar"
 import { getRandomNumber, getRandomString } from "../utils/data-helpers"
 import { Credentials } from "../enums/Credentials"
 
 
-test.describe.parallel("Registration Flow", async () => {
+test.describe.only("Registration Flow", async () => {
     let homePage: HomePage
     let registrationPage: RegistrationPage
+    let navbar: Navbar
 
     test.beforeEach(async ({ page }) => {
         homePage = new HomePage(page)
         registrationPage = new RegistrationPage(page)
+        navbar = new Navbar(page)
 
         await homePage.visit()
         await homePage.assertHomePage()
@@ -38,7 +41,8 @@ test.describe.parallel("Registration Flow", async () => {
         const phone = await getRandomString()
         await registrationPage.register(name, email, password, dayString, monthString, yearString, firstName, lastName, address, country, state, city,zip, phone)
         await registrationPage.assertSucessMsg()
-        await registrationPage.deleteAccount()
+        await registrationPage.continue()
+        await navbar.clickOnTab("Delete Account")
         await registrationPage.assertSucessDeleteMsg()
 
     })

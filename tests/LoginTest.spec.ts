@@ -1,6 +1,7 @@
 import { test } from "@playwright/test"
 import { HomePage } from "../pages/HomePage"
 import { LoginPage } from "../pages/authentication/LoginPage"
+import { Navbar } from "../pages/components/Navbar"
 
 import { invalidMailLoginData, invalidPasswordLoginData, validLoginData } from "../dataproviders/LoginDataProvider"
 
@@ -8,10 +9,12 @@ import { invalidMailLoginData, invalidPasswordLoginData, validLoginData } from "
 test.describe("Login flow", async () => {
     let homePage: HomePage
     let loginPage: LoginPage
+    let navbar: Navbar
 
     test.beforeEach(async ({ page }) => {
         homePage = new HomePage(page)
         loginPage = new LoginPage(page)
+        navbar = new Navbar(page)
 
         await homePage.visit()
         await homePage.assertHomePage()
@@ -22,7 +25,7 @@ test.describe("Login flow", async () => {
         test.only(`Valid login ${data.mail} and logout`, async ({ page }) => {
             await loginPage.login(data.mail, data.password)
             await loginPage.assertLogin()
-            await loginPage.logout()
+            await navbar.clickOnTab("Logout")
             await loginPage.assertLogout()
         })
     })

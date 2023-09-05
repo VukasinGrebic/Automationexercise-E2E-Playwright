@@ -47,7 +47,6 @@ export class RegistrationPage {
         this.phoneInput = page.locator("#mobile_number")
         this.registerBtn = page.locator("//button[@data-qa='create-account']")
         this.continueBtn = page.locator("//a[contains(@data-qa, 'continue-button')]")
-        this.deleteBtn = page.locator("text= Delete Account")
         this.successMsg = page.locator("//b")
         this.errorMsg = page.locator("//div[contains(@class, 'signup-form')]//p")
     }
@@ -78,11 +77,9 @@ export class RegistrationPage {
         await this.signupBtn.click()
     }
 
-    async deleteAccount() {
+    async continue() {
         await this.continueBtn.click()
-        await this.deleteBtn.click()
     }
-
 
     async assertSucessMsg() {
         await expect(this.successMsg).toContainText(Messages.REGISTRATION_SUCCESS)
