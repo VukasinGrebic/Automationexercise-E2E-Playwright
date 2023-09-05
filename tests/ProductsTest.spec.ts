@@ -37,7 +37,7 @@ test.describe.parallel("Products flow", async () =>{
         await productPage.assertSearchProducts(ActionItems.BLUE_TOP)
     })
 
-    test("User is adding products to cart",async ({page}) => {
-        
+    test.only("User is adding products to cart",async ({page}) => {
+        await productPage.addToCart()
     })
 })

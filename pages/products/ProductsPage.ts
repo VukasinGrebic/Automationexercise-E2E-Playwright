@@ -1,5 +1,4 @@
 import { expect, Page, Locator } from "@playwright/test"
-import { ActionItems } from "../../enums/ActionItems"
 
 export class ProductPage {
     readonly page: Page
@@ -12,6 +11,9 @@ export class ProductPage {
     readonly loc_products: Locator
     readonly loc_productList: Locator
     readonly loc_addToCart: Locator
+    readonly loc_continueShopping: Locator
+    readonly loc_viewCart: Locator
+    readonly loc_addCartTwo: Locator
     readonly loc_viewProduct: Locator
     readonly loc_productName: Locator
     readonly loc_productCategory: Locator
@@ -30,7 +32,10 @@ export class ProductPage {
         this.loc_brands = page.locator(".brands-name")
         this.loc_products = page.locator("text=All Products")
         this.loc_productList = page.locator(".features_items")
-        this.loc_addToCart = page.locator(".add-to-cart")
+        this.loc_addToCart = page.locator(".add-to-cart").first()
+        this.loc_addCartTwo = page.locator(".add-to-cart").nth(0)
+        this.loc_continueShopping = page.locator("text=Continue Shopping")
+        this.loc_viewCart = page.locator("text=View Cart")
         this.loc_viewProduct = page.locator("text=View Product").first()
         this.loc_singleProductName = page.locator("//div[contains(@class, 'overlay-content')]//p")
         this.loc_productName = page.locator("//div[contains(@class, 'product-information')]//h2")
@@ -71,6 +76,10 @@ export class ProductPage {
 
 
     async addToCart () {
-        
+        await this.loc_addToCart.click()
+        await this.loc_continueShopping.click()
+        await this.loc_addCartTwo.click()
+        await this.loc_viewCart.click()
+        await this.page.pause()
     }
 }
