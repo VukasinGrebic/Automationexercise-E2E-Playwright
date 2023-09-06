@@ -37,7 +37,17 @@ test.describe.parallel("Products flow", async () =>{
         await productPage.assertSearchProducts(ActionItems.BLUE_TOP)
     })
 
-    test.only("User is adding products to cart",async ({page}) => {
+    test("User is adding products to cart", async ({page}) => {
         await productPage.addToCart()
+        await productPage.assertCart(ActionItems.PRICE_ONE, ActionItems.PRICE_TWO, ActionItems.QUANTITY)
+        await productPage.removeFromCartMultiple()
+    })
+
+    test("User is adding multiple same product to cart", async ({page}) => {
+        await productPage.viewProduct()
+        await productPage.assertProductInfo()
+        await productPage.addToCartMultiple()
+        await productPage.assertMultipleCart(ActionItems.QUANTITY_MULTIPLE)
+        await productPage.removeFromCart()
     })
 })
