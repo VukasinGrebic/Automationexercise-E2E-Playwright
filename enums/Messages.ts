@@ -4,4 +4,5 @@ export enum Messages {
     REGISTRATION_SUCCESS = "Account Created!",
     REGISTRATION_ERROR = "Email Address already exist!",
     REGISTRATION_DELETE_SUCCESS = "Account Deleted!",
+    ORDER_SUCCESS = "Congratulations! Your order has been confirmed!",
 }

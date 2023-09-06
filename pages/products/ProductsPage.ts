@@ -31,7 +31,18 @@ export class ProductPage {
     readonly loc_remove: Locator
     readonly loc_quantity: Locator
     readonly loc_addCart: Locator
-    
+    readonly loc_proceedToCheckout: Locator
+    readonly loc_registerLogin: Locator
+    readonly loc_address: Locator
+    readonly loc_message: Locator
+    readonly loc_placeOrder: Locator
+    readonly loc_cardName: Locator
+    readonly loc_cardNumber: Locator
+    readonly loc_cvc: Locator
+    readonly loc_expirationMM: Locator
+    readonly loc_expirationYYYY: Locator
+    readonly loc_payAndConfirm: Locator
+    readonly loc_orderSuccess: Locator
 
     constructor (page: Page) {
         this.page = page
@@ -64,7 +75,18 @@ export class ProductPage {
         this.loc_remove = page.locator(".cart_quantity_delete").first()
         this.loc_quantity = page.locator("#quantity")
         this.loc_addCart = page.locator(".cart")
-        
+        this.loc_proceedToCheckout = page.locator("text=Proceed To Checkout")
+        this.loc_registerLogin = page.locator("//u[contains(text(), 'Register / Login')]")
+        this.loc_address = page.locator(".address_country_name").first()
+        this.loc_message = page.locator("//textarea[contains(@name, 'message')]")
+        this.loc_placeOrder = page.locator("text=Place Order")
+        this.loc_cardName = page.locator(("//input[contains(@data-qa, 'name-on-card')]"))
+        this.loc_cardNumber = page.locator(("//input[contains(@data-qa, 'card-number')]"))
+        this.loc_cvc = page.locator(("//input[contains(@data-qa, 'cvc')]"))
+        this.loc_expirationMM = page.locator(("//input[contains(@data-qa, 'expiry-month')]"))
+        this.loc_expirationYYYY = page.locator(("//input[contains(@data-qa, 'expiry-year')]"))
+        this.loc_payAndConfirm = page.locator("text=Pay and Confirm Order")
+        this.loc_orderSuccess = page.locator("//p").first()
     }
 
     async assertProductsPage () {
@@ -132,5 +154,38 @@ export class ProductPage {
         await this.loc_remove.click()
         await this.page.waitForTimeout(1500)
         await this.loc_remove.click()
+    }
+
+    async proceedToCheckout () {
+        await this.loc_proceedToCheckout.click()
+    }
+
+    async proceedToRegisterLogin () {
+        await this.loc_registerLogin.click()
+    }
+
+    async assertAddress () {
+        await expect(this.loc_address).toBeVisible()
+    }
+
+    async enterComment (message: string) {
+        await this.loc_message.type(message)
+    }
+
+    async placeOrder () {
+        await this.loc_placeOrder.click()
+    }
+
+    async paymentInfo (name: string, number: string, cvc: string, mm: string, yyyy: string) {
+        await this.loc_cardName.type(name)
+        await this.loc_cardNumber.type(number)
+        await this.loc_cvc.type(cvc)
+        await this.loc_expirationMM.type(mm)
+        await this.loc_expirationYYYY.type(yyyy)
+        await this.loc_payAndConfirm.click()
+    }
+
+    async assertOrder (message: string) {
+        await expect(this.loc_orderSuccess).toContainText(message)
     }
 }

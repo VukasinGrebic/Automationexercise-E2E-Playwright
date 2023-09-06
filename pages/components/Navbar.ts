@@ -12,7 +12,7 @@ export class Navbar {
         this.page = page
         this.home = page.locator("text= Home")
         this.products = page.locator("text= Products")
-        this.cart = page.locator("text= Cart")
+        this.cart = page.locator("text= Cart").first()
         this.logout = page.locator("text= Logout")
         this.deleteAccount = page.locator("text= Delete Account")
     }
