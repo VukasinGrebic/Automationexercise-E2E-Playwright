@@ -43,6 +43,7 @@ export class ProductPage {
     readonly loc_expirationYYYY: Locator
     readonly loc_payAndConfirm: Locator
     readonly loc_orderSuccess: Locator
+    readonly loc_emptyCart: Locator
 
     constructor (page: Page) {
         this.page = page
@@ -87,6 +88,7 @@ export class ProductPage {
         this.loc_expirationYYYY = page.locator(("//input[contains(@data-qa, 'expiry-year')]"))
         this.loc_payAndConfirm = page.locator("text=Pay and Confirm Order")
         this.loc_orderSuccess = page.locator("//p").first()
+        this.loc_emptyCart = page.locator("#empty_cart")
     }
 
     async assertProductsPage () {
@@ -154,6 +156,10 @@ export class ProductPage {
         await this.loc_remove.click()
         await this.page.waitForTimeout(1500)
         await this.loc_remove.click()
+    }
+
+    async assertEmptyCart () {
+        await expect(this.loc_emptyCart).toBeVisible()
     }
 
     async proceedToCheckout () {

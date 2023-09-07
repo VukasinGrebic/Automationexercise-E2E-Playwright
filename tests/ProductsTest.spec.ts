@@ -8,6 +8,7 @@ import { Credentials } from "../enums/Credentials"
 import { ActionItems } from "../enums/ActionItems"
 import { Messages } from "../enums/Messages"
 import { getRandomNumber, getRandomString } from "../utils/data-helpers"
+import { validLoginData } from "../dataproviders/LoginDataProvider"
 
 test.describe.parallel("Products flow", async () =>{
     let homePage: HomePage
@@ -40,18 +41,20 @@ test.describe.parallel("Products flow", async () =>{
         await productPage.assertSearchProducts(ActionItems.BLUE_TOP)
     })
 
-    test("User is adding products to cart", async ({page}) => {
+    test.only("User is adding products to cart", async ({page}) => {
         await productPage.addToCart()
         await productPage.assertCart(ActionItems.PRICE_ONE, ActionItems.PRICE_TWO, ActionItems.QUANTITY)
         await productPage.removeFromCartMultiple()
+        await productPage.assertEmptyCart()
     })
 
-    test("User is adding multiple same product to cart", async ({page}) => {
+    test.only("User is adding multiple same product to cart", async ({page}) => {
         await productPage.viewProduct()
         await productPage.assertProductInfo()
         await productPage.addToCartMultiple()
         await productPage.assertMultipleCart(ActionItems.QUANTITY_MULTIPLE)
         await productPage.removeFromCart()
+        await productPage.assertEmptyCart()
     })
 })
 
@@ -73,7 +76,7 @@ test.describe.parallel("Products flow", async () =>{
             await homePage.assertHomePage()
         })
 
-    test.only("User is ordering and registrating while checking out", async ({page}) => {
+    test("User is ordering and registrating while checking out", async ({page}) => {
         const name = await getRandomString()
         const email = await getRandomString() + "@mail.com"
         const password = await getRandomString()
@@ -107,5 +110,63 @@ test.describe.parallel("Products flow", async () =>{
         await productPage.paymentInfo(name, yearString, dayString, monthString, yearString)
         await productPage.assertOrder(Messages.ORDER_SUCCESS)
     })
+
+    test("User is ordering and registrating before checking out", async ({page}) => {
+        const name = await getRandomString()
+        const email = await getRandomString() + "@mail.com"
+        const password = await getRandomString()
+        const day = await getRandomNumber(1, 30)
+        const dayString = day.toString()
+        const month = await getRandomNumber(1, 12)
+        const monthString = month.toString()
+        const year = await getRandomNumber(1950, 2002)
+        const yearString = year.toString()
+        const firstName = await getRandomString()
+        const lastName = await getRandomString()
+        const address = await getRandomString()
+        const country = "Canada"
+        const state = await getRandomString()
+        const city = await getRandomString()
+        const zip = await getRandomString()
+        const phone = await getRandomString()
+        await homePage.clkSignUp()
+        await registrationPage.register(name, email, password, dayString, monthString, yearString, firstName, lastName, address, country, state, city,zip, phone)
+        await registrationPage.assertSucessMsg()
+        await registrationPage.continue()
+        await productPage.addToCart()
+        await productPage.assertCart(ActionItems.PRICE_ONE, ActionItems.PRICE_TWO, ActionItems.QUANTITY)
+        await productPage.proceedToCheckout()
+        await productPage.assertCart(ActionItems.PRICE_ONE, ActionItems.PRICE_TWO, ActionItems.QUANTITY)
+        await productPage.assertAddress()
+        await productPage.enterComment(firstName)
+        await productPage.placeOrder()
+        await productPage.paymentInfo(name, yearString, dayString, monthString, yearString)
+        await productPage.assertOrder(Messages.ORDER_SUCCESS)
+    })
+
+    validLoginData.forEach(data => {
+        test(`User is ordering and loging before checking out ${data.mail}`, async ({page}) => {
+            const name = await getRandomString()
+            const day = await getRandomNumber(1, 30)
+            const dayString = day.toString()
+            const month = await getRandomNumber(1, 12)
+            const monthString = month.toString()
+            const year = await getRandomNumber(1950, 2002)
+            const yearString = year.toString()
+            await homePage.clkSignUp()
+            await loginPage.login(data.mail, data.password)
+            await loginPage.assertLogin()
+            await productPage.addToCart()
+            await productPage.assertCart(ActionItems.PRICE_ONE, ActionItems.PRICE_TWO, ActionItems.QUANTITY)
+            await productPage.proceedToCheckout()
+            await productPage.assertCart(ActionItems.PRICE_ONE, ActionItems.PRICE_TWO, ActionItems.QUANTITY)
+            await productPage.assertAddress()
+            await productPage.enterComment(name)
+            await productPage.placeOrder()
+            await productPage.paymentInfo(name, yearString, dayString, monthString, yearString)
+            await productPage.assertOrder(Messages.ORDER_SUCCESS)
+        })
+    })
+    
 
 })
