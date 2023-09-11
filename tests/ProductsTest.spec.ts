@@ -41,14 +41,14 @@ test.describe.parallel("Products flow", async () =>{
         await productPage.assertSearchProducts(ActionItems.BLUE_TOP)
     })
 
-    test.only("User is adding products to cart", async ({page}) => {
+    test("User is adding products to cart", async ({page}) => {
         await productPage.addToCart()
         await productPage.assertCart(ActionItems.PRICE_ONE, ActionItems.PRICE_TWO, ActionItems.QUANTITY)
         await productPage.removeFromCartMultiple()
         await productPage.assertEmptyCart()
     })
 
-    test.only("User is adding multiple same product to cart", async ({page}) => {
+    test("User is adding multiple same product to cart", async ({page}) => {
         await productPage.viewProduct()
         await productPage.assertProductInfo()
         await productPage.addToCartMultiple()
@@ -56,6 +56,29 @@ test.describe.parallel("Products flow", async () =>{
         await productPage.removeFromCart()
         await productPage.assertEmptyCart()
     })
+
+    test("User is checking category",async ( {page} ) => {
+        await productPage.assertCategoryWoman()
+        await productPage.expandCategoryWoman()
+        await productPage.clickDress()
+        await productPage.assertCategory(Messages.DRESS_CATEGORY)
+        await productPage.expandCategoryKids()
+        await productPage.clickTopsAndShirts()
+        await productPage.assertCategory(Messages.TOPS_SHIRTS_CATEGORY)
+    })
+
+    test("User is checking brand",async ( {page} ) => {
+        await productPage.assertBrands()
+        await productPage.clickPolo()
+        await productPage.assertBrand(Messages.POLO)
+        await productPage.viewProduct()
+        await productPage.assertProductInfo()
+        await productPage.clickBiba()
+        await productPage.assertBrand(Messages.BIBA)
+        await productPage.viewProduct()
+        await productPage.assertProductInfo()
+    })
+
 })
 
     test.describe.parallel("Products order flow", async () =>{
@@ -166,6 +189,21 @@ test.describe.parallel("Products flow", async () =>{
             await productPage.paymentInfo(name, yearString, dayString, monthString, yearString)
             await productPage.assertOrder(Messages.ORDER_SUCCESS)
         })
+    })
+
+    test.only("User is searching products page and logging in after", async ({page}) => {
+        await navbar.clickOnTab("Products")
+        await productPage.assertProductsPage()
+        await productPage.search(ActionItems.BLUE_TOP)
+        await productPage.assertSearchProducts(ActionItems.BLUE_TOP)
+        await productPage.addToCartSingle()
+        await navbar.clickOnTab("Cart")
+        await productPage.assertCartSingle(ActionItems.PRICE_ONE, ActionItems.QUANTITY)
+        await homePage.clkSignUp()
+        await loginPage.login(Credentials.EMAIL, Credentials.PASSWORD)
+        await loginPage.assertLogin()
+        await navbar.clickOnTab("Cart")
+        await productPage.assertCartSingle(ActionItems.PRICE_ONE, ActionItems.QUANTITY)
     })
     
 

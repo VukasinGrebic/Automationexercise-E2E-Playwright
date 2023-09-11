@@ -6,6 +6,8 @@ export class ProductPage {
     readonly loc_searchBtn: Locator
     readonly loc_searchedProducts: Locator
     readonly loc_singleProductName: Locator
+    readonly loc_categoryWoman: Locator
+    readonly loc_categoryKids: Locator
     readonly loc_category: Locator
     readonly loc_brands: Locator
     readonly loc_product: Locator
@@ -44,13 +46,19 @@ export class ProductPage {
     readonly loc_payAndConfirm: Locator
     readonly loc_orderSuccess: Locator
     readonly loc_emptyCart: Locator
+    readonly loc_dress: Locator
+    readonly loc_topsAndShirts: Locator
+    readonly loc_brand: Locator
+    readonly loc_polo: Locator
+    readonly loc_biba: Locator
 
     constructor (page: Page) {
         this.page = page
         this.loc_searchProducts = page.locator("#search_product")
         this.loc_searchedProducts = page.locator("//h2[contains(text(), 'Searched Products')]")
         this.loc_searchBtn = page.locator("//button[@id='submit_search']")
-        this.loc_category = page.locator("#accordian")
+        this.loc_categoryWoman = page.locator("text=Women").first()
+        this.loc_categoryKids = page.locator("text=Kids").first()
         this.loc_brands = page.locator(".brands-name")
         this.loc_product = page.locator(".cart_product")
         this.loc_products = page.locator("text=All Products")
@@ -89,6 +97,12 @@ export class ProductPage {
         this.loc_payAndConfirm = page.locator("text=Pay and Confirm Order")
         this.loc_orderSuccess = page.locator("//p").first()
         this.loc_emptyCart = page.locator("#empty_cart")
+        this.loc_dress = page.locator("text=Dress ").first()
+        this.loc_topsAndShirts = page.locator("text=Tops & Shirts").first()
+        this.loc_category = page.locator("//h2[contains(@class, 'title text-center')]")
+        this.loc_brand = page.locator(".brands_products")
+        this.loc_polo = page.locator("text=Polo").first()
+        this.loc_biba = page.locator("text=Biba").first()
     }
 
     async assertProductsPage () {
@@ -119,6 +133,11 @@ export class ProductPage {
         await expect(this.loc_singleProductName).toContainText(name)
     }
 
+    async addToCartSingle () {
+        await this.loc_addToCart.click()
+        await this.loc_viewCart.click()
+    }
+
 
     async addToCart () {
         await this.loc_addToCart.click()
@@ -142,6 +161,13 @@ export class ProductPage {
         await expect(this.loc_quantityTwo).toContainText(qunatity)
         await expect(this.loc_priceTotalOne).toContainText(priceOne)
         await expect(this.loc_priceTotalTwo).toContainText(priceTwo)
+    }
+
+    async assertCartSingle (priceOne: string, qunatity: string,) {
+        await expect(this.loc_product).toHaveCount(1)
+        await expect(this.loc_priceOne).toContainText(priceOne)
+        await expect(this.loc_quantityOne).toContainText(qunatity)
+        await expect(this.loc_priceTotalOne).toContainText(priceOne)
     }
 
     async assertMultipleCart (qunatity: string) {
@@ -193,5 +219,45 @@ export class ProductPage {
 
     async assertOrder (message: string) {
         await expect(this.loc_orderSuccess).toContainText(message)
+    }
+
+    async expandCategoryWoman () {
+        await this.loc_categoryWoman.click()
+    }
+
+    async expandCategoryKids () {
+        await this.loc_categoryKids.click()
+    }
+
+    async clickTopsAndShirts () {
+        await this.loc_topsAndShirts.click()
+    }
+
+    async clickDress () {
+        await this.loc_dress.click()
+    }
+
+    async assertCategoryWoman () {
+        await expect(this.loc_categoryWoman).toBeVisible()
+    }
+
+    async assertCategory (category: string) {
+        await expect(this.loc_category).toContainText(category)
+    }
+
+    async assertBrands () {
+        await expect(this.loc_brand).toBeVisible()
+    }
+
+    async clickPolo() {
+        await this.loc_polo.click()
+    }
+
+    async clickBiba() {
+        await this.loc_biba.click()
+    }
+
+    async assertBrand (brand: string) {
+        await expect(this.loc_category).toContainText(brand)
     }
 }
