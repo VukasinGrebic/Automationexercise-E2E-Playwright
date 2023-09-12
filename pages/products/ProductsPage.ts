@@ -26,10 +26,13 @@ export class ProductPage {
     readonly loc_productBrand: Locator
     readonly loc_priceOne: Locator
     readonly loc_priceTwo: Locator
+    readonly loc_priceFour: Locator
     readonly loc_quantityOne: Locator
     readonly loc_quantityTwo: Locator
+    readonly loc_quantityFour: Locator
     readonly loc_priceTotalOne: Locator
     readonly loc_priceTotalTwo: Locator
+    readonly loc_priceTotalFour: Locator
     readonly loc_remove: Locator
     readonly loc_quantity: Locator
     readonly loc_addCart: Locator
@@ -51,6 +54,15 @@ export class ProductPage {
     readonly loc_brand: Locator
     readonly loc_polo: Locator
     readonly loc_biba: Locator
+    readonly loc_writeReview: Locator
+    readonly loc_name: Locator
+    readonly loc_email: Locator
+    readonly loc_review: Locator
+    readonly loc_submit: Locator
+    readonly loc_reviewMsg: Locator
+    readonly loc_recommendedItems: Locator
+    readonly loc_addToCartRec: Locator
+    
 
     constructor (page: Page) {
         this.page = page
@@ -76,11 +88,14 @@ export class ProductPage {
         this.loc_productCondition = page.locator("//div[contains(@class, 'product-information')]//b[contains(text(), 'Condition:')]")
         this.loc_productBrand = page.locator("//div[contains(@class, 'product-information')]//b[contains(text(), 'Brand:')]")
         this.loc_priceOne = page.locator("//tr[contains(@id, 'product-1')]/td[contains(@class, 'cart_price')]/p")
+        this.loc_priceFour = page.locator("//tr[contains(@id, 'product-4')]/td[contains(@class, 'cart_price')]/p")
         this.loc_priceTwo = page.locator("//tr[contains(@id, 'product-2')]/td[contains(@class, 'cart_price')]/p")
         this.loc_quantityOne = page.locator("//tr[contains(@id, 'product-1')]/td[contains(@class, 'cart_quantity')]/button")
         this.loc_quantityTwo = page.locator("//tr[contains(@id, 'product-2')]/td[contains(@class, 'cart_quantity')]/button")
+        this.loc_quantityFour = page.locator("//tr[contains(@id, 'product-4')]/td[contains(@class, 'cart_quantity')]/button")
         this.loc_priceTotalOne = page.locator("//tr[contains(@id, 'product-1')]/td[contains(@class, 'cart_total')]/p")
         this.loc_priceTotalTwo = page.locator("//tr[contains(@id, 'product-2')]/td[contains(@class, 'cart_total')]/p")
+        this.loc_priceTotalFour = page.locator("//tr[contains(@id, 'product-4')]/td[contains(@class, 'cart_total')]/p")
         this.loc_remove = page.locator(".cart_quantity_delete").first()
         this.loc_quantity = page.locator("#quantity")
         this.loc_addCart = page.locator(".cart")
@@ -103,6 +118,14 @@ export class ProductPage {
         this.loc_brand = page.locator(".brands_products")
         this.loc_polo = page.locator("text=Polo").first()
         this.loc_biba = page.locator("text=Biba").first()
+        this.loc_writeReview = page.locator("text=Write Your Review")
+        this.loc_name = page.locator("#name")
+        this.loc_email = page.locator("#email")
+        this.loc_review = page.locator("#review")
+        this.loc_submit = page.locator("#button-review")
+        this.loc_reviewMsg = page.locator("//div[contains(@class,'alert-success alert')]/span")
+        this.loc_recommendedItems = page.locator("text=recommended items")
+        this.loc_addToCartRec = page.locator("//a[contains(@data-product-id,'4')]").first()
     }
 
     async assertProductsPage () {
@@ -138,6 +161,11 @@ export class ProductPage {
         await this.loc_viewCart.click()
     }
 
+    async addToCartSingleRec () {
+        await this.loc_addToCartRec.click()
+        await this.loc_viewCart.click()
+    }
+
 
     async addToCart () {
         await this.loc_addToCart.click()
@@ -168,6 +196,13 @@ export class ProductPage {
         await expect(this.loc_priceOne).toContainText(priceOne)
         await expect(this.loc_quantityOne).toContainText(qunatity)
         await expect(this.loc_priceTotalOne).toContainText(priceOne)
+    }
+
+    async assertCartSingleRec (priceOne: string, qunatity: string,) {
+        await expect(this.loc_product).toHaveCount(1)
+        await expect(this.loc_priceFour).toContainText(priceOne)
+        await expect(this.loc_quantityFour).toContainText(qunatity)
+        await expect(this.loc_priceTotalFour).toContainText(priceOne)
     }
 
     async assertMultipleCart (qunatity: string) {
@@ -260,4 +295,25 @@ export class ProductPage {
     async assertBrand (brand: string) {
         await expect(this.loc_category).toContainText(brand)
     }
+
+    async assertReview () {
+        await expect(this.loc_writeReview).toBeVisible()
+    }
+
+    async enterReview (name: string, email: string, review: string) {
+        await this.loc_name.type(name)
+        await this.loc_email.type(email)
+        await this.loc_review.type(review)
+        await this.loc_submit.click()
+    }
+
+    async assertReviewMsg (text: string) {
+        await expect(this.loc_reviewMsg).toContainText(text)
+    }
+
+    async assertRecommendedItems () {
+        await expect(this.loc_recommendedItems).toBeVisible()
+    }
+
+    
 }

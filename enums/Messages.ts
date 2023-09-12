@@ -9,4 +9,5 @@ export enum Messages {
     TOPS_SHIRTS_CATEGORY = "Kids - Tops & Shirts Products",
     POLO = "Brand - Polo Products",
     BIBA = "Brand - Biba Products",
+    REVIEW_MSG = "Thank you for your review"
 }
