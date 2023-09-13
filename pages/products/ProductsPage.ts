@@ -1,4 +1,5 @@
 import { expect, Page, Locator } from "@playwright/test"
+import fs from 'fs'
 
 export class ProductPage {
     readonly page: Page
@@ -38,7 +39,14 @@ export class ProductPage {
     readonly loc_addCart: Locator
     readonly loc_proceedToCheckout: Locator
     readonly loc_registerLogin: Locator
-    readonly loc_address: Locator
+    readonly loc_firstname: Locator
+    readonly loc_lastname: Locator
+    readonly loc_address1: Locator
+    readonly loc_city: Locator
+    readonly loc_state: Locator
+    readonly loc_postcode: Locator
+    readonly loc_country: Locator
+    readonly loc_phone: Locator
     readonly loc_message: Locator
     readonly loc_placeOrder: Locator
     readonly loc_cardName: Locator
@@ -62,6 +70,8 @@ export class ProductPage {
     readonly loc_reviewMsg: Locator
     readonly loc_recommendedItems: Locator
     readonly loc_addToCartRec: Locator
+    readonly loc_downloadInvoice: Locator
+    
     
 
     constructor (page: Page) {
@@ -101,7 +111,14 @@ export class ProductPage {
         this.loc_addCart = page.locator(".cart")
         this.loc_proceedToCheckout = page.locator("text=Proceed To Checkout")
         this.loc_registerLogin = page.locator("//u[contains(text(), 'Register / Login')]")
-        this.loc_address = page.locator(".address_country_name").first()
+        this.loc_firstname = page.locator(".address_firstname").first()
+        this.loc_lastname = page.locator(".address_lastname").first()
+        this.loc_address1 = page.locator(".address_address1").nth(1)
+        this.loc_city = page.locator(".address_city").first()
+        this.loc_state = page.locator(".address_state_name").first()
+        this.loc_postcode = page.locator(".address_postcode").first()
+        this.loc_country= page.locator(".address_country_name").first()
+        this.loc_phone = page.locator(".address_phone").first()
         this.loc_message = page.locator("//textarea[contains(@name, 'message')]")
         this.loc_placeOrder = page.locator("text=Place Order")
         this.loc_cardName = page.locator(("//input[contains(@data-qa, 'name-on-card')]"))
@@ -126,6 +143,7 @@ export class ProductPage {
         this.loc_reviewMsg = page.locator("//div[contains(@class,'alert-success alert')]/span")
         this.loc_recommendedItems = page.locator("text=recommended items")
         this.loc_addToCartRec = page.locator("//a[contains(@data-product-id,'4')]").first()
+        this.loc_downloadInvoice = page.locator("text=Download Invoice")
     }
 
     async assertProductsPage () {
@@ -232,7 +250,19 @@ export class ProductPage {
     }
 
     async assertAddress () {
-        await expect(this.loc_address).toBeVisible()
+        await expect(this.loc_country).toBeVisible()
+    }
+
+    async assertAddressDetails (firstname: string, lastname:string, address: string, city: string, state: string, postcode: string, country: string, phone: string) {
+        await expect(this.loc_firstname).toContainText(firstname)
+        await expect(this.loc_lastname).toContainText(lastname)
+        await expect(this.loc_address1).toContainText(address)
+        await expect(this.loc_city).toContainText(city)
+        await expect(this.loc_state).toContainText(state)
+        await expect(this.loc_postcode).toContainText(postcode)
+        await expect(this.loc_country).toContainText(country)
+        await expect(this.loc_phone).toContainText(phone)
+
     }
 
     async enterComment (message: string) {
@@ -315,5 +345,13 @@ export class ProductPage {
         await expect(this.loc_recommendedItems).toBeVisible()
     }
 
-    
+    async downloadInvoice () {
+        const [ download ] = await Promise.all([
+            this.page.waitForEvent('download'),
+            this.loc_downloadInvoice.click(),
+          ])
+          expect(download.suggestedFilename()).toBe("invoice.txt")
+          expect((await fs.promises.stat(await download.path() as string)).size).toBeGreaterThan(50)
+    }
+
 }
