@@ -267,7 +267,7 @@ test.describe.parallel("Products flow", async () =>{
     })
 
     validLoginData.forEach(data => {
-        test.only(`User is ordering and loging before checking out and downloading invoice ${data.mail}`, async ({page}) => {
+        test(`User is ordering and loging before checking out and downloading invoice ${data.mail}`, async ({page}) => {
             const name = await getRandomString()
             const day = await getRandomNumber(1, 30)
             const dayString = day.toString()
