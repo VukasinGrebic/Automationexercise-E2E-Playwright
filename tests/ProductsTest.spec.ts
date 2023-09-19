@@ -105,7 +105,7 @@ test.describe.parallel("Products flow", async () =>{
 
 })
 
-    test.describe.parallel("Products order flow", async () =>{
+    test.describe("Products order flow", async () =>{
         let registrationPage: RegistrationPage
         let homePage: HomePage
         let productPage: ProductPage
